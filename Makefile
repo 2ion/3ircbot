@@ -1,5 +1,6 @@
 .PHONY: ii
 ii:
+	git submodule foreach git pull
 	make -C ii
 	ln -s ii/ii ii.bin
 
