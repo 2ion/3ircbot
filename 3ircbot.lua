@@ -85,12 +85,11 @@ local function ii_collect_pipes(channel)
   end
   for c,_ in pairs(Config.channels) do
     local p = channelpath(c)
-    local pipeout = p..'/in'
-    local pipein = p..'/out'
+    Config.channels[c].pout = p..'/out'
+    Config.channels[c].pin = p..'/in'
     assert(access(p, "rx"), "No access to channel directory: "..c)
-    assert(access(pipeout, "r") and access(pipein, "w"), "No access to channel FIFOs: "..c)
-    Config.channels[c].pout = pipeout
-    Config.channels[c].pin = pipein
+    assert(access(Config.channels[c].pout, "r") and access(Config.channels[c].pin, "w"),
+      "No access to channel FIFOs: "..c)
   end
   assert(access(Config.prefix, "rx"))
   II.pin = Config.prefix..'/in'
