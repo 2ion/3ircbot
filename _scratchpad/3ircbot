@@ -1,0 +1,56 @@
+#!/bin/bash
+
+SCRIPT_VERSION=0.1
+IRCDIR=
+HOOKS=()
+
+log () {
+  echo -e "$0: $@"
+}
+
+register () {
+  if [[ ! $1 =~ ^\. ]] ; then
+    log "Error: Hook does not begin with a dot: $1"
+    return 1
+  fi
+  HOOKS=("${HOOKS[@]}" "$1,$2")
+  log "Registered hook #${#HOOKS[@]}: $1 -> $2"
+  return 0
+}
+
+## MAIN ##
+
+echo "+---------+"
+echo "| 3ircbot |"
+echo "+---------+"
+
+if [[ ! -x ./ii.bin ]] ; then
+  log "Error: could not find executable ii.bin in \$PATH."
+  exit 1
+fi
+
+log "Processing config.sh ..."
+. config.sh
+IRCDIR="$PREFIX/irc"
+log "Finished processing config.sh."
+
+if [[ ! -d $IRCDIR ]] || ! mkdir -p "$IRCDIR" ; then
+  log "Could not create $IRCDIR."
+  exit 1
+fi
+
+coproc ./ii.bin -i "$IRCDIR" -s "$SERVER" -p "$PORT" -n "$NICK" -f "$REALNAME"
+
+if [[ ! -d $IRCDIR/$SERVER ]] ; then
+  log "Could not connect to server $SERVER"
+  exit 1
+fi
+
+IRCIN="$IRCDIR/$SERVER/in"
+IRCOUT="$IRCDIR/$SERVER/out"
+
+for channel in ${CHANNELS[@]} ; do
+  echo "/j #$channel" > "$IRCIN"
+done
+
+wait $COPROC_PID

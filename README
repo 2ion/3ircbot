@@ -1,0 +1,7 @@
+README
+======
+
+( work in progress )
+
+3ircbot is a IRC bot written in Lua on top of suckless.org's superb ii
+irc client.
