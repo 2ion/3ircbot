@@ -76,11 +76,37 @@ local function ii_join()
   end
 end
 
+local function ii_collect_pipes(channel)
+  local function channelpath(c)
+    return string.format("%s/%s/%s",
+      Config.prefix,
+      Config.server,
+      c)
+  end
+  for c,_ in pairs(Config.channels) do
+    local p = channelpath(c)
+    local pipeout = p..'/in'
+    local pipein = p..'/out'
+    assert(access(p, "rx"), "No access to channel directory: "..c)
+    assert(access(pipeout, "r") and access(pipein, "w"), "No access to channel FIFOs: "..c)
+    Config.channels[c].pout = pipeout
+    Config.channels[c].pin = pipein
+  end
+  assert(access(Config.prefix, "rx"))
+  II.pin = Config.prefix..'/in'
+  II.pout = Config.prefix..'/out'
+  assert(access(II.pin, "w") and access(II.pout, "r"))
+end
+
+-- main
+
 printfb("<3ircbot")
 printf([[Bot version: %s
 Server: %s
 Port: %s
 Nick: %s
 Full name: %s]], Version, Config.server, Config.port, Config.nickname, Config.fullname)
+
+
 
 --II.wpipe = fork_ii()
