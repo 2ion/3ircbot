@@ -1,4 +1,4 @@
-.PHONY: ii
+.PHONY: ii clean
 ii:
 	git submodule foreach git pull
 	make -C ii
