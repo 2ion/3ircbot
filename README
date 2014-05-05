@@ -5,3 +5,5 @@ README
 
 3ircbot is a IRC bot written in Lua on top of suckless.org's superb ii
 irc client.
+
+Run `make init` before everything else.
