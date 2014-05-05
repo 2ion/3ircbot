@@ -3,7 +3,10 @@
 -- 3ircbot - <3 ii
 -- work in progress
 
+local Version = '0.1'
 local Posix = require 'posix'
+local Tbox = require 'tbox'
+local II = {}
 local Config = {
   server = "camelia.2ion.de",
   port = 6669,
@@ -12,10 +15,13 @@ local Config = {
   prefix = "./irc.io",
   channels = {}
 }
-local II = {}
 
 local function printf(...)
-  io.write("3ircbot: "..string.format(...)..'\n')
+  io.write(string.format(...)..'\n')
+end
+
+local function printfb(...)
+  io.write(Tbox(string.format(...))..'\n')
 end
 
 local function assert_arg_type(v, type)
@@ -60,7 +66,7 @@ local function fork_ii()
 end
 
 local function ii_write(s)
-  assert(II.wpipe)
+  assert_arg_type(s, 'string')
   return Posix.write(II.wpipe, s)
 end
 
@@ -70,4 +76,11 @@ local function ii_join()
   end
 end
 
-II.wpipe = fork_ii()
+printfb("<3ircbot")
+printf([[Bot version: %s
+Server: %s
+Port: %s
+Nick: %s
+Full name: %s]], Version, Config.server, Config.port, Config.nickname, Config.fullname)
+
+--II.wpipe = fork_ii()

@@ -1,3 +1,6 @@
 [submodule "ii"]
 	path = ii
 	url = http://git.suckless.org/ii
+[submodule "lua-tbox"]
+	path = lua-tbox
+	url = git@github.com:2ion/lua-tbox.git
