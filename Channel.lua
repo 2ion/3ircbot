@@ -1,6 +1,6 @@
 local Channel = {}
 
-function Channel.new(i, o)
+function Channel.new(i, o, p)
   local _o = {}
   setmetatable(_o, { __index = Channel })
   _o:setpipes(i, o)
