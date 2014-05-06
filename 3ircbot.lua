@@ -107,6 +107,4 @@ Port: %s
 Nick: %s
 Full name: %s]], Version, Config.server, Config.port, Config.nickname, Config.fullname)
 
-
-
 --II.wpipe = fork_ii()
